@@ -55,31 +55,34 @@ Quicksort:
   
   while:
     for1:
-	  cmp r6, r8
-	  beq out
+      // early exit if r6 == r8
+      cmp r6, r8
+      beq out
 	  
   	  ldr r7, [r0, r6, lsl #2] // r7 = A[l]
-	  cmp r7, r5
-	  bge for2
-	  add r6, r6, #1
-	  b for1
+      cmp r7, r5
+      bge for2
+      add r6, r6, #1
+      b for1
 	
-	for2:
-	  cmp r6, r8
-	  beq out
-	  
-  	  ldr r9, [r0, r8, lsl #2] // r9 = A[r]
-	  cmp r9, r5
-	  ble out
-	  sub r8, r8, #1
-	  b for2
-	out:
+    for2:
+      // early exit if r6 == r8
+      cmp r6, r8
+      beq out
+      
+        ldr r9, [r0, r8, lsl #2] // r9 = A[r]
+      cmp r9, r5
+      ble out
+      sub r8, r8, #1
+      b for2
+    out:
 	
     cmp r6, r8
+    // if (r6 != r8) swap(A[l], A[r])
     strne r7, [r0, r8, lsl #2]
     strne r9, [r0, r6, lsl #2]
 	
-	blt while
+    blt while
   
   mov r8, r1
   mov r1, r6
